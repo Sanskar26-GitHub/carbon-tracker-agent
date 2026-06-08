@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Footprint Tracker</title>
+    <meta name="description" content="Calculate and track your personal carbon footprint with our beautiful dashboard.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <header class="app-header">
+        <h1>Carbon Footprint Tracker</h1>
+    </header>
+
+    <main class="dashboard">
+        <section class="calculator-section" aria-labelledby="form-heading">
+            <h2 id="form-heading">Enter Your Data</h2>
+            <form id="carbon-form" class="carbon-form" novalidate>
+                <!-- Transport Data -->
+                <fieldset>
+                    <legend>Transport</legend>
+                    <div class="form-group">
+                        <label for="transport_distance_km">Distance Travelled (km)</label>
+                        <input type="number" id="transport_distance_km" name="transport_distance_km" min="0" step="0.1"
+                            required aria-required="true">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vehicle_type">Vehicle Type</label>
+                        <select id="vehicle_type" name="vehicle_type" required aria-required="true">
+                            <option value="" disabled selected>Select a vehicle</option>
+                            <option value="suv">Gasoline SUV</option>
+                            <option value="sedan">Standard Sedan</option>
+                            <option value="hybrid">Hybrid</option>
+                            <option value="ev">Electric Vehicle</option>
+                            <option value="bus">Public Bus</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="carpool_passengers">Carpool Passengers</label>
+                        <input type="number" id="carpool_passengers" name="carpool_passengers" min="0" step="1" required
+                            aria-required="true">
+                    </div>
+                </fieldset>
+
+                <!-- Utility Data -->
+                <fieldset>
+                    <legend>Utilities</legend>
+                    <div class="form-group">
+                        <label for="electricity_kwh">Electricity Usage (kWh)</label>
+                        <input type="number" id="electricity_kwh" name="electricity_kwh" min="0" step="0.1" required
+                            aria-required="true">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="natural_gas_m3">Natural Gas Usage (m³)</label>
+                        <input type="number" id="natural_gas_m3" name="natural_gas_m3" min="0" step="0.1" required
+                            aria-required="true">
+                    </div>
+                </fieldset>
+
+                <!-- Diet Data -->
+                <fieldset>
+                    <legend>Diet</legend>
+                    <div class="form-group">
+                        <label for="diet_profile">Dietary Profile</label>
+                        <select id="diet_profile" name="diet_profile" required aria-required="true">
+                            <option value="" disabled selected>Select a profile</option>
+                            <option value="meat_intense">Meat Intense</option>
+                            <option value="omnivore">Average Omnivore</option>
+                            <option value="vegetarian">Vegetarian</option>
+                            <option value="vegan">Vegan</option>
+                        </select>
+                    </div>
+                </fieldset>
+
+                <button type="submit" class="submit-btn">Calculate Footprint</button>
+            </form>
+        </section>
+
+        <section class="results-section" aria-labelledby="results-heading" id="results-section" hidden>
+            <h2 id="results-heading">Your Carbon Footprint</h2>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>Transport</h3>
+                    <p class="metric-value"><span id="transport-out">0.00</span> kg</p>
+                </div>
+                <div class="metric-card">
+                    <h3>Utilities</h3>
+                    <p class="metric-value"><span id="utility-out">0.00</span> kg</p>
+                </div>
+                <div class="metric-card">
+                    <h3>Diet</h3>
+                    <p class="metric-value"><span id="diet-out">0.00</span> kg</p>
+                </div>
+                <div class="metric-card total-card">
+                    <h3>Total Emissions</h3>
+                    <p class="metric-value"><span id="total-out">0.00</span> kg CO₂e</p>
+                </div>
+            </div>
+
+            <div class="insights-container">
+                <h3>Personalized Insights</h3>
+                <ul id="insights-list" class="insights-list" aria-live="polite">
+                    <!-- Insights injected here via JS -->
+                </ul>
+            </div>
+        </section>
+
+        <div id="error-message" class="error-message" role="alert" hidden></div>
+    </main>
+
+    <script src="/static/app.js"></script>
+</body>
+
+</html>

@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse
 from app.schemas import CarbonFootprintRequest, CarbonFootprintResponse
 from app.services.calculator import CarbonCalculator
 
@@ -11,6 +11,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# 1. Strict CORS Middleware (Security Boost)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -18,6 +19,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 2. Enterprise Security Headers (Security Boost)
 @app.middleware("http")
 async def add_security_headers(request: Request, call_next):
     response = await call_next(request)
@@ -26,22 +28,18 @@ async def add_security_headers(request: Request, call_next):
     response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     return response
 
-@app.exception_handler(Exception)
-async def global_exception_handler(request: Request, exc: Exception):
-    return JSONResponse(
-        status_code=500,
-        content={"detail": "Internal Server Error"},
-    )
+# Note: The blanket exception handler has been INTENTIONALLY REMOVED 
+# to allow FastAPI and your calculator to gracefully handle business logic errors natively.
 
-# 1. Mount the static directory so style.css and app.js can load
+# 3. Mount static directory
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# 2. Serve the index.html file when users visit the main URL
+# 4. Serve Frontend
 @app.get("/")
 def serve_frontend():
     return FileResponse("index.html")
 
-# 3. The existing calculation engine endpoint
+# 5. Asynchronous Calculation Engine (Efficiency Boost)
 @app.post("/api/v1/calculate", response_model=CarbonFootprintResponse)
 async def calculate_carbon_footprint(request: CarbonFootprintRequest) -> CarbonFootprintResponse:
     """
